@@ -2,6 +2,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    color: white;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 html, body {
@@ -9,47 +11,223 @@ html, body {
     height: 100%;
 }
 
-:root {
-    --x: 50%;
-    --y: 50%;
+body {
+    background-color:#0C1014;
 }
 
-.wrapper {
-    width: 100%;
+/* Sidebar */
+aside {
+    width: 250px;
     height: 100%;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Both images */
-.wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
+    border-right:1px solid #4a494949;
+    padding: 30px 40px;
+    overflow-y: auto;
 }
 
-/* Bottom image */
+aside .logo {
+    margin-bottom: 50px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.all-opations {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.all-opations .raju {
+    transition: all cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
+}
+
+.all-opations .raju:active{
+    scale: 0.95;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 50px;
+}
+
+.all-opations i {
+    margin-right: 20px;
+}
+
+aside::-webkit-scrollbar {
+    display: none;
+}
+
+/* Home Reels Section */
+#Home-reels-section {
+    width: calc(100% - 250px);
+    height: 100vh;
+    margin-left: 200px; /* fix: same as sidebar width */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+/* Reels Card */
+.All-reels {
+    /* background-color: red; */
+    width: 370px;
+    height: 550px;
+    border-radius: 10px;
+    position: relative;
+    overflow: auto;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    /* border: 2px solid red; */
+}
+
+.All-reels::-webkit-scrollbar {
+    display: none;
+}
+
+ .reels {
+    /* border: 2px solid red; */
+    width: 80%;
+    height: 100%;
+    /* background-color: blanchedalmond; */
+    border-radius: 10px;
+    margin-bottom: 45px;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    position: relative;
+    
+
+}
+
+.reels video {
+    width: 100%;
+    overflow: hidden;
+    height: 100%;
+
+}
+
+ #muted {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: rgba(82, 77, 77, 0.378);
+    position: absolute;
+    top: 10px;
+    right: -60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    transition: all cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
+
+}
+
+.reels i:active {
+    scale: 0.90;
+}
+
 .bottom {
-    z-index: 1;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 20px;
 }
 
-/* Top image (mask effect) */
-.top {
-    z-index: 2;
 
-    /* 🔥 MAGIC PART */
-    mask-image: radial-gradient(
-        150px at var(--x) var(--y),
-        transparent 0%,
-        black 100%
-    );
+.user {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 10px;
+}
+.user img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    
+}
 
-    -webkit-mask-image: radial-gradient(
-        150px at var(--x) var(--y),
-        transparent 0%,
-        black 100%
-    );
+.user h2 {
+    font-size: 1rem;
+}
+
+.user button {
+    padding: 0.3rem 1rem;
+    background-color: transparent;
+    border: 2px solid white;
+    border-radius: 10px;
+    transition: all cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
+
+}
+
+.user button:active {
+    scale: 0.90;
+}
+
+
+.right {
+    position: absolute;
+    top: 35%;
+    right: -50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    /* border: 2px solid red; */
+    gap: 27px;
+}
+
+.right i {
+    font-size: 1rem;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+.right i:active {
+    scale: 0.90;
+}
+
+.right h2 {
+    font-size: 1rem;
+}
+
+.Messages {
+    width: 250px;
+    height: 60px;
+    border-radius: 30px;
+    border: 2px solid rgba(255, 255, 255, 0.144);
+    position: fixed;
+    top: 88%;
+    right: 40px;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.059);
+}
+
+.Messages i {
+    font-size: 1rem;
+}
+
+
+.Messages h2 {
+    font-size: 1rem;
+    margin-left: 10px;
+}
+.Messages img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    margin-left: 80px;
+    object-fit: cover;
+    object-position: center;
 }
