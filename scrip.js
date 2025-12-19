@@ -124,7 +124,8 @@ const reels = [
 
 let Allreels = document.querySelector('.All-reels')
 
-let sum = '' ;
+function hello () {
+  let sum = '' ;
 
 reels.forEach((dets,idx)=> {
  
@@ -135,7 +136,7 @@ reels.forEach((dets,idx)=> {
                    <div class="user">
                      <img src="${dets.userProfile}" alt="">
                     <h2>${dets.username}</h2>
-                    <button>${dets.isFollowed?'UNfOLLOW':'FOLLOW'}</button>
+                    <button id="${idx}"class="follow">${dets.isFollowed?'UNfOLLOW':'FOLLOW'}</button>
                    </div>
                    <div class="discraption">
                     <p>${dets.caption}</p>
@@ -143,8 +144,8 @@ reels.forEach((dets,idx)=> {
                     
                 </div>
                 <div class="right">
-                    <div class="like">
-                        <i class="fa-regular fa-heart"></i>
+                    <div id="${idx}" class="like">
+                        ${dets.isLiked?'<i class="fa-solid fa-heart love"></i>':'<i class="fa-regular fa-heart"></i>'}
                         <h2>${dets.likeCount}</h2>
                     </div>
 
@@ -170,6 +171,11 @@ reels.forEach((dets,idx)=> {
                     <div class="dot">
                         <i class="fa-solid fa-list"></i>
                     </div>
+                  
+                  <div class="music">
+                     <img src="${dets.userProfile}" alt="">
+                  </div>
+
 
                 </div>
 
@@ -181,3 +187,25 @@ reels.forEach((dets,idx)=> {
 });
 
 Allreels.innerHTML = sum;
+}
+
+hello();
+
+Allreels.addEventListener('click', (e) => {
+
+  const id = e.target.id;
+  if (id === undefined) return;
+
+  // LIKE
+  if (e.target.classList.contains('like')) {
+    reels[id].isLiked = !reels[id].isLiked;
+    reels[id].likeCount += reels[id].isLiked ? 1 : -1;
+  }
+
+  // FOLLOW
+  if (e.target.classList.contains('follow')) {
+    reels[id].isFollowed = !reels[id].isFollowed;
+  }
+
+  hello(); // UI update only once
+});

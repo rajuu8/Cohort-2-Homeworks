@@ -151,11 +151,13 @@ aside::-webkit-scrollbar {
     border-radius: 50%;
     object-fit: cover;
     object-position: center;
-    
+    cursor: pointer;
 }
 
 .user h2 {
     font-size: 1rem;
+    cursor: pointer;
+
 }
 
 .user button {
@@ -164,6 +166,7 @@ aside::-webkit-scrollbar {
     border: 2px solid white;
     border-radius: 10px;
     transition: all cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
+    cursor: pointer;
 
 }
 
@@ -182,7 +185,7 @@ aside::-webkit-scrollbar {
     align-items: center;
     text-align: center;
     /* border: 2px solid red; */
-    gap: 27px;
+    gap: 18px;
 }
 
 .right i {
@@ -229,5 +232,25 @@ aside::-webkit-scrollbar {
     border-radius: 50%;
     margin-left: 80px;
     object-fit: cover;
+    object-position: top;
+}
+
+.like i , h2 {
+    pointer-events: none;
+}
+
+.love {
+    color: red;
+}
+
+.music {
+    width: 25px;
+    height: 25px;
+}
+
+.music img {
+    width: 100%;
+    object-fit: cover;
     object-position: center;
+    border-radius: 5px;
 }
