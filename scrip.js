@@ -3,6 +3,7 @@ const reels = [
     username: "Raju.Dash.",
     likeCount: 1240,
     isLiked: false,
+    ismute : true,
     commentCount: 98,
     shareCount: 45,
     reopstCount: 20,
@@ -15,6 +16,7 @@ const reels = [
     username: "neha.designs",
     likeCount: 3420,
     isLiked: true,
+    ismute : false,
     commentCount: 210,
     reopstCount: 10,
     shareCount: 120,
@@ -27,6 +29,7 @@ const reels = [
     username: "rohan.markets",
     likeCount: 890,
     isLiked: false,
+    ismute : false,
     commentCount: 56,
     reopstCount: 28,
     shareCount: 22,
@@ -39,6 +42,7 @@ const reels = [
     username: "priya.creates",
     likeCount: 5670,
     isLiked: true,
+     ismute : false,
     commentCount: 340,
     reopstCount: 60,
     shareCount: 280,
@@ -51,6 +55,7 @@ const reels = [
     username: "kabir.codes",
     likeCount: 2210,
     isLiked: false,
+    ismute : false,
     commentCount: 130,
     reopstCount: 67,
     shareCount: 75,
@@ -62,7 +67,8 @@ const reels = [
   {
     username: "travel.with.adi",
     likeCount: 8450,
-    isLiked: true,
+    ismuted : true,
+    isLike: false,
     commentCount: 510,
     shareCount: 600,
     reopstCount: 90,
@@ -74,7 +80,8 @@ const reels = [
   {
     username: "fitness.riya",
     likeCount: 4320,
-    isLiked: false,
+    ismuted : true,
+    isLike: false,
     commentCount: 260,
     reopstCount: 35,
     shareCount: 190,
@@ -86,7 +93,8 @@ const reels = [
   {
     username: "music.by.sam",
     likeCount: 1980,
-    isLiked: true,
+    ismuted : true,
+    isLike: false,
     commentCount: 145,
     reopstCount: 67,
     shareCount: 88,
@@ -98,7 +106,8 @@ const reels = [
   {
     username: "foodie.nikhil",
     likeCount: 6230,
-    isLiked: false,
+    ismuted : true,
+    isLike: false,
     commentCount: 390,
     reopstCount: 46,
     shareCount: 410,
@@ -110,6 +119,7 @@ const reels = [
   {
     username: "tech.daily",
     likeCount: 9120,
+    ismute : false,
     isLiked: true,
     commentCount: 720,
     reopstCount: 76,
@@ -130,8 +140,8 @@ function hello () {
 reels.forEach((dets,idx)=> {
  
   sum += ` <div class="reels">
-                <video autoplay muted loop  src="${dets.video}"> </video>
-                <i  id="muted" class="fa-solid fa-volume-xmark"></i>
+                <video autoplay muted loop ${dets.ismute?'muted':''} src="${dets.video}"> </video>
+                <i   class=" muted fa-solid fa-volume-xmark"></i>
                 <div class="bottom">
                    <div class="user">
                      <img src="${dets.userProfile}" alt="">
@@ -191,21 +201,97 @@ Allreels.innerHTML = sum;
 
 hello();
 
+// Allreels.addEventListener('click', (e) => {
+
+//   const id = e.target.id;
+//   if (id === undefined) return;
+
+//   // LIKE
+//   if (e.target.classList.contains('like')) {
+//     reels[id].isLiked = !reels[id].isLiked;
+//     reels[id].likeCount += reels[id].isLiked ? 1 : -1;
+//   }
+
+//   // FOLLOW
+//   if (e.target.classList.contains('follow')) {
+//     reels[id].isFollowed = !reels[id].isFollowed;
+//   }
+
+//   hello(); // UI update only once
+// });
+
+
+
 Allreels.addEventListener('click', (e) => {
+    const id = e.target.id;
 
-  const id = e.target.id;
-  if (id === undefined) return;
+    // LIKE toggle
+    if (e.target.classList.contains('like')) {
+        reels[id].isLiked = !reels[id].isLiked;
+        reels[id].likeCount += reels[id].isLiked ? 1 : -1;
+        hello(); // update UI
+    }
 
-  // LIKE
-  if (e.target.classList.contains('like')) {
-    reels[id].isLiked = !reels[id].isLiked;
-    reels[id].likeCount += reels[id].isLiked ? 1 : -1;
-  }
+    // FOLLOW toggle
+    if (e.target.classList.contains('follow')) {
+        reels[id].isFollowed = !reels[id].isFollowed;
+        hello(); // update UI
+    }
 
-  // FOLLOW
-  if (e.target.classList.contains('follow')) {
-    reels[id].isFollowed = !reels[id].isFollowed;
-  }
+    // MUTE toggle
+    if (e.target.classList.contains('muted')) {
+        const video = e.target.previousElementSibling; // <video> element
+        if (!video) return;
 
-  hello(); // UI update only once
-});
+        video.muted = !video.muted;
+
+        e.target.classList.toggle('fa-volume-xmark');
+        e.target.classList.toggle('fa-volume-high');
+
+        // DO NOT call hello() here
+    }
+});// =====================
+// SCROLL PAUSE/PLAY + AUTO UNMUTE RESPECTING ORIGINAL STATE
+// =====================
+
+const options = {
+    root: null,      
+    threshold: 0.5   
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        const video = entry.target;
+        const icon = video.nextElementSibling; // <i> element
+
+        // Get index of video to access original ismute value
+        const idx = [...document.querySelectorAll('.reels video')].indexOf(video);
+        const isOriginallyMute = reels[idx].ismute; // original mute state
+
+        if (entry.isIntersecting) {
+            video.play();   
+
+            if (!isOriginallyMute) {
+                // originally unmute → keep unmuted
+                video.muted = false;
+                if (icon && icon.classList.contains('muted')) {
+                    icon.classList.remove('fa-volume-xmark');
+                    icon.classList.add('fa-volume-high');
+                }
+            } else {
+                // originally mute → keep muted
+                video.muted = true;
+                if (icon && icon.classList.contains('muted')) {
+                    icon.classList.add('fa-volume-xmark');
+                    icon.classList.remove('fa-volume-high');
+                }
+            }
+
+        } else {
+            video.pause();  
+        }
+    });
+}, options);
+
+// Observe all videos
+document.querySelectorAll('.reels video').forEach(video => observer.observe(video));
